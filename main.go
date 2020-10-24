@@ -52,12 +52,10 @@ func create(c *gin.Context) {
 	name := c.Param("name")
 	price, err := strconv.ParseUint(c.Param("price"), 10, 64)
 	if err != nil {
-		// panic("Error Convert")
 		c.JSON(503, gin.H{
 			"error": "error convert",
 		})
 		return
-
 	}
 
 	db := initdb()
