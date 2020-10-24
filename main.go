@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +20,7 @@ func main() {
 
 	r.GET("/", read)
 	r.POST("/add/:name/:price", create)
-	r.PUT("/update/:name", update)
+	r.PUT("/update/:name/:id", update)
 	r.DELETE("/delete/:id", delete)
 
 	r.Run()
@@ -47,7 +46,6 @@ func delete(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"info": "delete id " + id,
 	})
-
 }
 
 func create(c *gin.Context) {
@@ -61,7 +59,6 @@ func create(c *gin.Context) {
 		return
 
 	}
-	fmt.Println(price)
 
 	db := initdb()
 	db.Create(&Data{
@@ -80,15 +77,14 @@ func read(c *gin.Context) {
 	db.Find(&data)
 
 	c.JSON(200, data)
-
 }
 
 func update(c *gin.Context) {
 	name := c.Param("name")
+	id := c.Param("id")
 	db := initdb()
-	db.Model(&Data{}).Where("ID = ?", 2).Update("name", name)
+	db.Model(&Data{}).Where("ID = ?", id).Update("name", name)
 	c.JSON(200, gin.H{
-		"update": "update name 2",
+		"update": "update name " + id,
 	})
-
 }
